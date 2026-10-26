@@ -1,0 +1,6 @@
+{
+  "name": "2026 AI 서비스 기획 공모전",
+  "description": "한국프로세스혁신협회 주최 2026 AI 서비스 기획 공모전 안내 및 접수 페이지",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

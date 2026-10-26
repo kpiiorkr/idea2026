@@ -1,0 +1,1066 @@
+import React, { useState } from 'react';
+import {
+  Award,
+  BookOpen,
+  Calendar,
+  CheckCircle2,
+  ChevronDown,
+  ChevronUp,
+  Clock,
+  ExternalLink,
+  Flame,
+  Gamepad2,
+  Laptop,
+  Mail,
+  MessageCircle,
+  Shield,
+  Sparkles,
+  TriangleAlert,
+  Send,
+  ArrowRight
+} from 'lucide-react';
+
+export default function App() {
+  const [openSample, setOpenSample] = useState<number | null>(0);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  const IDEA_SUBMISSION_URL = 'https://forms.gle/7fohFqbxPndkCJ5M8';
+
+  const toggleSample = (idx: number) => {
+    setOpenSample(openSample === idx ? null : idx);
+  };
+
+  const toggleFaq = (idx: number) => {
+    setOpenFaq(openFaq === idx ? null : idx);
+  };
+
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const faqs = [
+    {
+      q: '개발 경험이 없어도 신청할 수 있나요?',
+      a: '네, 비전공자나 입문자도 참여 가능합니다. 기초부터 실무 프로젝트까지 단계별로 체계적으로 진행되는 국비지원 KDT 교육 과정을 통해 역량을 쌓아 아이디어를 직접 구현할 수 있습니다.',
+    },
+    {
+      q: '교육비가 드나요?',
+      a: '국민내일배움카드를 발급받으실 수 있는 분이라면 국비지원을 통해 최대 약 2,000만원 상당의 교육비가 전액 지원(과정에 따라 자기부담금 0원~최소 금액)됩니다.',
+    },
+    {
+      q: '재직 중이거나 알바를 병행할 수 있나요?',
+      a: '풀타임 몰입형 교육으로 진행되므로 평일 주간(09:00~18:00) 수업 출석 및 팀 협업이 필수입니다. 따라서 풀타임 참여가 불가능한 재직자나 알바 병행 예정자는 지원이 제한됩니다.',
+    },
+    {
+      q: '이미 해당 교육을 등록한 경우 참가할 수 있나요?',
+      a: '본 공모전은 교육 신규 참여자를 대상으로 진행되므로, 이미 해당 교육과정에 등록하셨거나 기 수강생인 경우 참가 대상에서 제외됩니다. 반드시 본 공모전 접수를 먼저 진행해주세요.',
+    },
+    {
+      q: 'Unity 자격증은 언제 받을 수 있나요?',
+      a: '교육 과정 등록 확인 및 교육 시작 후 약 1개월 시점에 1차 혜택으로 협회에서 Unity Certified User(UCU, 229달러 상당) 응시 기회를 무상 제공합니다.',
+    },
+    {
+      q: '1차 수상을 못 하면 2차 도전이 불가능한가요?',
+      a: '교육 등록을 정상 완료하신 모든 참가자는 1차 상장을 수여받으며, 이후 교육을 끝까지 성실히 수료(출석률 80% 이상)하고 최종 결과물을 제출하시면 누구나 2차 시상(MacBook 등)에 도전하실 수 있습니다.',
+    },
+  ];
+
+  const samples = [
+    {
+      track: '카카오테크 부트캠프 | 풀스택 트랙',
+      title: '취업 포트폴리오 자동 피드백 서비스',
+      problem:
+        '포트폴리오를 만들어도 혼자서는 잘 썼는지 판단하기 어렵고, 주변에 전문적으로 봐줄 개발자나 멘토가 없어서 막막한 상태로 그냥 제출하게 됨.',
+      solution:
+        '내 포트폴리오를 PDF나 URL로 업로드하면 AI가 분석하여 "이 부분은 기술 스택을 구체적으로 써야 해요", "프로젝트 트러블슈팅 설명이 부족해요" 같은 피드백을 맞춤형으로 제공하는 웹 서비스.',
+      motive:
+        '웹 기본 지식이 있으며, 이번 부트캠프 교육을 통해 프론트·백엔드뿐 아니라 최신 AI 연동까지 직접 완벽하게 구현할 수 있는 풀스택 빌더로 성장하고 싶습니다.',
+    },
+    {
+      track: '카카오테크 부트캠프 | AI 실무 개발 트랙',
+      title: 'AI 챗봇 악용 시도 및 프롬프트 인젝션 자동 감지 서비스',
+      problem:
+        '생성형 AI 서비스를 도입하는 기업이 급증했으나 악의적인 프롬프트 인젝션, 민감 정보 유출 등 보안 취약점에 대한 실시간 방어 체계가 부재함.',
+      solution:
+        'API 게이트웨이 형태로 동작하여 사용자의 입력 프롬프트를 실시간 진단하고, 공격 패턴 및 유해 요청을 사전에 차단·격리하는 AI 보안 관제 대시보드.',
+      motive:
+        'LLM 모델 자체의 보안 취약점을 체계적으로 분석하고 안전하고 신뢰할 수 있는 엔터프라이즈 AI 보안 체계를 구축하는 AI 실무 엔지니어가 되고자 지원합니다.',
+    },
+    {
+      track: 'kt cloud tech up | 클라우드 백엔드 트랙',
+      title: '동네 소상공인을 위한 상권 데이터 기반 매출 예측 서비스',
+      problem:
+        '소상공인들이 신규 메뉴 출시나 입점 결정 시 정확한 상권 데이터와 유동 인구 통계를 접하기 어렵고 고가의 분석 툴을 구독하기 부담스러움.',
+      solution:
+        '공공 데이터와 지도 기반 상권 분석 알고리즘을 결합하여, 간단한 매장 위치와 업종 입력만으로 예상 매출과 방문자 트렌드를 시각화해 주는 클라우드 기반 웹 플랫폼.',
+      motive:
+        '클라우드 분산 아키텍처와 대용량 데이터 처리 기술을 배워, 실제 사회 문제를 기술로 해결하는 신뢰도 높은 백엔드 서비스를 구축하고 싶습니다.',
+    },
+  ];
+
+  return (
+    <div className="min-h-screen font-sans bg-white text-[#1a202c] selection:bg-[#d1f0e8] selection:text-[#008f6f]">
+      {/* Top Banner Notice */}
+      <div className="bg-[#00a884] text-white py-2 px-4 text-center text-xs sm:text-sm font-semibold flex items-center justify-center gap-2">
+        <Sparkles className="w-4 h-4 shrink-0" />
+        <span>2026 AI 서비스 기획 공모전 접수 중 (2026.10.26 ~ 2026.11.30)</span>
+        <span className="hidden sm:inline">|</span>
+        <a
+          href={IDEA_SUBMISSION_URL}
+          target="_blank"
+          rel="noreferrer"
+          className="underline hover:text-white/80 font-bold ml-1 inline-flex items-center gap-1"
+        >
+          [1단계] 공모전 아이디어 먼저 제출하기 →
+        </a>
+      </div>
+
+      {/* Header */}
+      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#d1e7e2]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
+          <div className="flex items-center gap-2 cursor-pointer" onClick={() => scrollToSection('hero')}>
+            <div className="bg-[#00a884] text-white font-bold px-2 py-1 rounded text-sm tracking-wider">KPII</div>
+            <span className="text-lg sm:text-xl font-bold text-[#1a202c]">한국프로세스혁신협회</span>
+          </div>
+
+          <nav className="hidden md:flex items-center gap-7 text-[#4a5568] font-semibold text-sm">
+            <button onClick={() => scrollToSection('intro')} className="hover:text-[#00a884] transition-colors cursor-pointer">소개</button>
+            <button onClick={() => scrollToSection('process')} className="hover:text-[#00a884] transition-colors cursor-pointer">참여절차</button>
+            <button onClick={() => scrollToSection('benefits')} className="hover:text-[#00a884] transition-colors cursor-pointer">시상혜택</button>
+            <button onClick={() => scrollToSection('tracks')} className="hover:text-[#00a884] transition-colors cursor-pointer font-bold text-[#00a884]">모집트랙</button>
+            <button onClick={() => scrollToSection('samples')} className="hover:text-[#00a884] transition-colors cursor-pointer">샘플</button>
+            <button onClick={() => scrollToSection('faq')} className="hover:text-[#00a884] transition-colors cursor-pointer">FAQ</button>
+          </nav>
+
+          <div className="flex items-center gap-2 sm:gap-3">
+            <a
+              href={IDEA_SUBMISSION_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="bg-[#00a884] hover:bg-[#008f6f] text-white font-bold text-xs sm:text-sm px-3.5 sm:px-4 py-2 rounded-full transition-all shadow-sm flex items-center gap-1.5"
+            >
+              <Send className="w-3.5 h-3.5" />
+              <span>아이디어 제출 (1단계)</span>
+            </a>
+            <button
+              onClick={() => scrollToSection('tracks')}
+              className="text-[#00a884] hover:text-[#008f6f] font-bold text-xs sm:text-sm px-3.5 sm:px-4 py-2 bg-[#e6f4f1] rounded-full transition-all border border-[#00a884]/30 hidden sm:block cursor-pointer"
+            >
+              트랙 보기 (2단계)
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <section id="hero" className="relative overflow-hidden bg-[#f4f9f8] py-20 sm:py-28 lg:py-36 border-b border-[#d1e7e2]/60">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+          <div className="text-center">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#e6f4f1] text-[#00a884] text-xs sm:text-sm font-bold mb-6 border border-[#00a884]/20">
+              <span className="w-2 h-2 rounded-full bg-[#00a884] animate-pulse"></span>
+              2026 AI 서비스 기획 공모전 | 한국프로세스혁신협회
+            </div>
+
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-[#1a202c] mb-8 leading-tight tracking-tight">
+              내 AI 서비스 아이디어, <br />
+              <span className="text-[#00a884]">직접 만들어보세요.</span>
+            </h1>
+
+            <p className="text-lg sm:text-2xl text-[#4a5568] mb-12 max-w-3xl mx-auto leading-relaxed break-keep">
+              공모전 기획서 제출로 시작해 국비지원 실전 교육으로 실제 제품까지 구현합니다. <br className="hidden sm:block" />
+              맥북 시상과 협회 공식 상장의 기회에 지금 도전하세요!
+            </p>
+
+            {/* Date info & Preceding Idea Submission CTA */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-8">
+              <div className="flex flex-col items-center sm:items-start bg-white/90 px-6 py-4 rounded-2xl border border-[#d1e7e2] shadow-sm">
+                <span className="text-xs text-[#718096] uppercase font-bold tracking-wider mb-1 flex items-center gap-1.5">
+                  <Calendar className="w-3.5 h-3.5 text-[#00a884]" /> 접수기간
+                </span>
+                <span className="text-xl sm:text-2xl font-bold text-[#2d3748]">2026. 10. 26 ~ 11. 30</span>
+              </div>
+
+              {/* Step 1: Preceding Idea Submission Button */}
+              <a
+                href={IDEA_SUBMISSION_URL}
+                target="_blank"
+                rel="noreferrer"
+                className="w-full sm:w-auto bg-[#00a884] hover:bg-[#008f6f] text-white px-8 sm:px-10 py-4 sm:py-5 rounded-2xl font-bold text-lg sm:text-xl transition-all shadow-xl shadow-[#00a884]/25 active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <Send className="w-5 h-5" />
+                <span>공모전 아이디어 제출하기 (1단계) →</span>
+              </a>
+
+              {/* Step 2: Course track anchor button */}
+              <button
+                onClick={() => scrollToSection('tracks')}
+                className="w-full sm:w-auto bg-white hover:bg-gray-50 text-[#2d3748] border-2 border-[#d1e7e2] px-6 sm:px-8 py-4 sm:py-5 rounded-2xl font-bold text-base sm:text-lg transition-all shadow-sm active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <span>모집 트랙 둘러보기 (2단계)</span>
+              </button>
+            </div>
+
+            {/* Notice Box emphasizing idea submission first */}
+            <div className="inline-block bg-amber-50 border-2 border-amber-300 p-5 sm:p-6 rounded-2xl max-w-2xl text-left shadow-sm">
+              <div className="flex items-start gap-3">
+                <TriangleAlert className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-bold text-amber-900 mb-1 text-base">
+                    공모전 지원 접수 마감: 2026년 11월 30일(월) 마감
+                  </p>
+                  <p className="text-xs sm:text-sm text-amber-800 leading-relaxed mb-3">
+                    ※ 공모전 아이디어 제출을 <strong>먼저 완료</strong>한 후 교육과정에 등록하셔야 연계 시상 혜택을 받으실 수 있습니다.
+                  </p>
+                  <a
+                    href={IDEA_SUBMISSION_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-amber-950 bg-amber-200/80 hover:bg-amber-300/80 px-4 py-2 rounded-xl transition-colors"
+                  >
+                    👉 공모전 아이디어 먼저 제출하러 가기 (소요시간 3분)
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Intro Section */}
+      <section id="intro" className="py-20 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <div className="bg-[#f4f9f8] p-8 sm:p-14 rounded-[2.5rem] text-center border border-[#d1e7e2] shadow-sm">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1a202c] mb-6">
+              AI 서비스를 만들고 싶다는 아이디어, 있으신가요?
+            </h2>
+            <div className="space-y-5 text-base sm:text-lg text-[#4a5568] leading-relaxed break-keep">
+              <p>
+                이번 공모전은 내가 만들고 싶은 AI 서비스를 기획해서 제출하고, <br className="hidden sm:block" />
+                국가가 지원하는 실전형 교육을 통해 직접 구현하는 것을 목표로 합니다.
+              </p>
+              <p>
+                교육비 최대 약 2,000만원이 전액 정부 지원으로 제공되며, <br className="hidden sm:block" />
+                수료자에게는 <strong>MacBook 시상</strong>과 <strong>협회 명의 공식 수상장</strong>이 수여됩니다.
+              </p>
+              <p className="font-bold text-[#00a884] text-lg sm:text-xl pt-2">
+                내 아이디어를 현실로 만들고 싶다면, 지금이 시작할 기회입니다.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Process Section */}
+      <section id="process" className="py-20 bg-white border-t border-[#f0f4f3]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="bg-white p-8 sm:p-12 rounded-3xl border border-[#d1e7e2] shadow-sm">
+            <h3 className="text-xs sm:text-sm font-bold text-[#718096] uppercase mb-12 tracking-widest text-center">
+              참여 절차
+            </h3>
+
+            {/* 5 Steps Process */}
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-6 relative items-start">
+              {/* Step 1 */}
+              <div className="flex flex-col items-center text-center relative group">
+                <div className="w-12 h-12 rounded-full bg-[#00a884] text-white flex items-center justify-center font-bold mb-4 shadow-lg shadow-[#00a884]/20 group-hover:scale-110 transition-transform">
+                  1
+                </div>
+                <h4 className="text-base sm:text-lg font-bold mb-1 text-[#1a202c]">AI 서비스 기획 제출</h4>
+                <p className="text-xs sm:text-sm text-[#718096] font-medium leading-snug mb-3">
+                  희망 트랙 선택 후 아이디어 제출 (3분)
+                </p>
+                <a
+                  href={IDEA_SUBMISSION_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1 text-xs font-bold text-[#00a884] bg-[#e6f4f1] hover:bg-[#d5eee7] px-3 py-1.5 rounded-full transition-colors"
+                >
+                  아이디어 제출하기 →
+                </a>
+                <div className="hidden md:block absolute top-6 left-[calc(50%+2rem)] w-[calc(100%-4rem)] h-[2px] bg-[#d1e7e2]"></div>
+              </div>
+
+              {/* Step 2 */}
+              <div className="flex flex-col items-center text-center relative group">
+                <div className="w-12 h-12 rounded-full bg-[#00a884] text-white flex items-center justify-center font-bold mb-4 shadow-lg shadow-[#00a884]/20 group-hover:scale-110 transition-transform">
+                  2
+                </div>
+                <h4 className="text-base sm:text-lg font-bold mb-1 text-[#1a202c]">KDT 교육과정 등록</h4>
+                <p className="text-xs sm:text-sm text-[#718096] font-medium leading-snug">
+                  협회 안내에 따라 교육과정 등록·합격
+                </p>
+                <div className="hidden md:block absolute top-6 left-[calc(50%+2rem)] w-[calc(100%-4rem)] h-[2px] bg-[#d1e7e2]"></div>
+              </div>
+
+              {/* Step 3 */}
+              <div className="flex flex-col items-center text-center relative group">
+                <div className="w-12 h-12 rounded-full bg-[#00a884] text-white flex items-center justify-center font-bold mb-4 shadow-lg shadow-[#00a884]/20 group-hover:scale-110 transition-transform">
+                  3
+                </div>
+                <h4 className="text-base sm:text-lg font-bold mb-1 text-[#1a202c]">1차 시상</h4>
+                <p className="text-xs sm:text-sm text-[#718096] font-medium leading-snug">
+                  <span className="font-bold text-[#00a884]">2027.01.30</span> — 상장 + Unity 자격증 응시 기회
+                </p>
+                <div className="hidden md:block absolute top-6 left-[calc(50%+2rem)] w-[calc(100%-4rem)] h-[2px] bg-[#d1e7e2]"></div>
+              </div>
+
+              {/* Step 4 */}
+              <div className="flex flex-col items-center text-center relative group">
+                <div className="w-12 h-12 rounded-full bg-[#00a884] text-white flex items-center justify-center font-bold mb-4 shadow-lg shadow-[#00a884]/20 group-hover:scale-110 transition-transform">
+                  4
+                </div>
+                <h4 className="text-base sm:text-lg font-bold mb-1 text-[#1a202c]">교육 수료 및 구현</h4>
+                <p className="text-xs sm:text-sm text-[#718096] font-medium leading-snug">
+                  5개월 실전 교육 + 결과물 제출
+                </p>
+                <div className="hidden md:block absolute top-6 left-[calc(50%+2rem)] w-[calc(100%-4rem)] h-[2px] bg-[#d1e7e2]"></div>
+              </div>
+
+              {/* Step 5 */}
+              <div className="flex flex-col items-center text-center relative group">
+                <div className="w-12 h-12 rounded-full bg-[#00a884] text-white flex items-center justify-center font-bold mb-4 shadow-lg shadow-[#00a884]/20 group-hover:scale-110 transition-transform">
+                  5
+                </div>
+                <h4 className="text-base sm:text-lg font-bold mb-1 text-[#1a202c]">2차 시상</h4>
+                <p className="text-xs sm:text-sm text-[#718096] font-medium leading-snug">
+                  <span className="font-bold text-[#00a884]">2027.06.30</span> — MacBook 등 시상
+                </p>
+              </div>
+            </div>
+
+            {/* 4 Schedule Summary Cards */}
+            <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="bg-[#f4f9f8] rounded-2xl p-4 text-center border border-[#d1e7e2]">
+                <p className="text-xs text-[#718096] font-bold uppercase mb-1">접수</p>
+                <p className="font-bold text-[#1a202c] text-sm sm:text-base">2026.10.26 ~ 11.30</p>
+              </div>
+              <div className="bg-[#f4f9f8] rounded-2xl p-4 text-center border border-[#d1e7e2]">
+                <p className="text-xs text-[#718096] font-bold uppercase mb-1">교육 시작</p>
+                <p className="font-bold text-[#00a884] text-sm sm:text-base">각 교육일정 확인 (과정별 상이)</p>
+              </div>
+              <div className="bg-[#f4f9f8] rounded-2xl p-4 text-center border border-[#d1e7e2]">
+                <p className="text-xs text-[#718096] font-bold uppercase mb-1">1차 시상 발표</p>
+                <p className="font-bold text-[#1a202c] text-sm sm:text-base">2027.01.30</p>
+              </div>
+              <div className="bg-[#f4f9f8] rounded-2xl p-4 text-center border border-[#d1e7e2]">
+                <p className="text-xs text-[#718096] font-bold uppercase mb-1">2차 시상 발표</p>
+                <p className="font-bold text-[#1a202c] text-sm sm:text-base">2027.06.30</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Benefits Section */}
+      <section id="benefits" className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-xs sm:text-sm font-bold text-[#718096] uppercase mb-3 tracking-widest">
+              시상 혜택
+            </h2>
+            <p className="text-2xl sm:text-3xl font-extrabold text-[#1a202c]">
+              참여만 해도, 완주하면 더 크게
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* 1st Award */}
+            <div className="bg-white p-8 sm:p-12 rounded-3xl border border-[#d1e7e2] shadow-sm flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between mb-8">
+                  <h3 className="text-[#00a884] font-bold text-sm tracking-widest uppercase flex items-center gap-2">
+                    <Award className="w-5 h-5" /> 1차 시상 — 2027.01.30
+                  </h3>
+                  <span className="text-xs font-semibold px-2.5 py-1 bg-[#e6f4f1] text-[#00a884] rounded-md">
+                    등록 완료자 전원
+                  </span>
+                </div>
+
+                <div className="space-y-6">
+                  <div className="flex items-start gap-4 border-b border-gray-100 pb-6">
+                    <div className="bg-[#00a884] text-white px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap mt-0.5">
+                      교육 등록 완료
+                    </div>
+                    <div>
+                      <p className="font-bold text-lg sm:text-xl text-[#2d3748]">한국프로세스혁신협회 명의 상장</p>
+                      <p className="text-sm text-[#718096] mt-1">교육 등록 및 개강 확인 후 전원 공식 수여</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-4">
+                    <div className="bg-[#f4f9f8] border border-[#d1e7e2] px-3 py-1.5 rounded-lg text-xs font-bold text-[#00a884] whitespace-nowrap mt-0.5">
+                      1개월 후 지급
+                    </div>
+                    <div>
+                      <p className="font-bold text-lg sm:text-xl text-[#2d3748]">Unity 자격증 (UCU) 응시 기회</p>
+                      <p className="text-sm text-[#718096] mt-1">229달러 상당 글로벌 공인 라이선스 — 협회 직접 지원</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-8 pt-6 border-t border-gray-100 text-xs text-[#718096]">
+                ※ 1차 시상 혜택은 정해진 기간 내 교육과정에 정상 등록한 참가자에 한해 순차 지급됩니다.
+              </div>
+            </div>
+
+            {/* 2nd Award */}
+            <div className="bg-[#2d3748] text-white p-8 sm:p-12 rounded-3xl shadow-xl border border-white/10 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between mb-8">
+                  <h3 className="text-[#3eb489] font-bold text-sm tracking-widest uppercase flex items-center gap-2">
+                    <Laptop className="w-5 h-5" /> 2차 시상 — 2027.06.30
+                  </h3>
+                  <span className="text-xs font-semibold px-2.5 py-1 bg-white/10 text-[#fbd38d] rounded-md">
+                    최종 수료 및 완성작
+                  </span>
+                </div>
+
+                <div className="space-y-6">
+                  <div className="flex items-start gap-4 border-b border-white/10 pb-6">
+                    <div className="bg-[#f6ad55] text-white px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap mt-0.5">
+                      대상
+                    </div>
+                    <div>
+                      <p className="font-bold text-2xl text-[#fbd38d] flex items-center gap-2">
+                        MacBook Pro 14
+                      </p>
+                      <p className="text-sm text-gray-300 mt-1">
+                        구현 결과물 완성도 + 출석률 80% 이상 종합 심사 평가 1위
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-white/5 p-4 rounded-xl border border-white/10">
+                      <p className="text-[#3eb489] text-xs font-bold mb-1">최우수상</p>
+                      <p className="font-bold text-base sm:text-lg">MacBook Air</p>
+                      <p className="text-[11px] text-gray-400 mt-1">우수 구현작 수여</p>
+                    </div>
+                    <div className="bg-white/5 p-4 rounded-xl border border-white/10">
+                      <p className="text-[#3eb489] text-xs font-bold mb-1">완주자 전원</p>
+                      <p className="font-bold text-base sm:text-lg">장려상</p>
+                      <p className="text-[11px] text-gray-400 mt-1">수료생 특별 리워드</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <p className="mt-8 text-xs text-gray-400 leading-relaxed">
+                ※ 1차 참가자가 20인 미만일 경우 시상 규모가 축소될 수 있으며,
+                변경 시 사전 공식 공지 및 이메일로 안내드립니다.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Unity Section */}
+      <section id="unity" className="py-20 bg-[#f4f9f8]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <div className="bg-white p-8 sm:p-12 rounded-[2.5rem] border border-[#d1e7e2] shadow-sm">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="bg-[#1a1a2e] text-white p-2.5 rounded-xl">
+                <Gamepad2 className="w-6 h-6" />
+              </div>
+              <h2 className="text-xl sm:text-2xl font-bold text-[#1a202c]">Unity 자격증 (UCU)이란?</h2>
+            </div>
+            <div className="space-y-4 text-sm sm:text-base text-[#4a5568] leading-relaxed">
+              <p>
+                Unity는 게임, AR/VR, 3D 시뮬레이션, AI 기반 인터랙티브 콘텐츠 제작에 전 세계적으로 가장 널리 쓰이는 플랫폼입니다.
+                <strong className="text-[#1a202c]"> Unity Certified User(UCU)</strong>는 Unity 본사가 공식 발급하는 글로벌 인증 자격증으로, AI 서비스·메타버스·XR 개발 분야 취업 시 고용주가 실력을 객관적으로 검증하는 데 활용됩니다.
+              </p>
+              <p>
+                취득 후에는 LinkedIn, 이메일, 이력서, 포트폴리오에 <strong className="text-[#1a202c]">글로벌 디지털 배지</strong>로 즉시 공유할 수 있어 취업 경쟁력을 높이는 데 실질적인 도움이 됩니다.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 pt-4">
+                <a
+                  href="https://cafe.naver.com/aikdt/276"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center justify-center gap-2 bg-[#00a884] text-white px-5 py-3 rounded-xl font-bold text-sm hover:bg-[#008f6f] transition-all"
+                >
+                  공모전 참여 없이 자격증 응시하기 →
+                </a>
+                <a
+                  href="https://pf.kakao.com/_rDXbX/chat"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center justify-center gap-2 bg-[#FEE500] text-[#1a1a1a] px-5 py-3 rounded-xl font-bold text-sm hover:brightness-95 transition-all"
+                >
+                  <MessageCircle className="w-4 h-4" /> 카카오톡 문의
+                </a>
+                <a
+                  href="mailto:ai@kpii.or.kr"
+                  className="inline-flex items-center justify-center gap-2 bg-[#f4f9f8] border border-[#d1e7e2] text-[#2d3748] px-5 py-3 rounded-xl font-bold text-sm hover:bg-[#d1e7e2] transition-all"
+                >
+                  <Mail className="w-4 h-4" /> ai@kpii.or.kr
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Pre-caution Box with Idea Submission Button */}
+      <section className="py-6 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="bg-amber-50 border-2 border-amber-400 rounded-3xl p-6 sm:p-8">
+            <h3 className="text-amber-800 font-bold text-lg mb-4 flex items-center gap-2">
+              <TriangleAlert className="w-5 h-5 text-amber-600" />
+              참가 전 꼭 읽어주세요
+            </h3>
+            <ol className="space-y-3 list-decimal list-inside text-sm sm:text-base text-amber-950 leading-relaxed font-medium mb-6">
+              <li>공모전 아이디어 제출을 <strong>먼저 완료</strong>한 후 교육과정에 등록하셔야 합니다.</li>
+              <li>
+                교육과정 등록은 <strong>반드시 협회 안내(아래 버튼)를 통해</strong> 진행해주세요. 교육기관 사이트에서 직접 신청 시 공모전 연계가 되지 않습니다.
+              </li>
+              <li>이미 해당 교육과정에 등록하신 분은 참가 대상에서 제외됩니다.</li>
+              <li>교육 미등록 시 심사 및 시상 대상에서 제외됩니다.</li>
+            </ol>
+
+            <div className="pt-2">
+              <a
+                href={IDEA_SUBMISSION_URL}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white font-bold px-6 py-3.5 rounded-xl transition-all shadow-md active:scale-95 text-sm sm:text-base"
+              >
+                <Send className="w-4 h-4" />
+                <span>공모전 아이디어 먼저 제출하기 (1단계 필수) →</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Eligibility Section */}
+      <section id="eligibility" className="py-20 bg-[#f4f9f8]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <div className="bg-white p-8 sm:p-14 rounded-[3rem] shadow-sm border border-[#d1e7e2]">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-center mb-10">참가 조건</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+              <div>
+                <h4 className="font-bold text-lg text-[#1a202c] mb-4 flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-[#00a884]" />
+                  이런 분께 맞습니다
+                </h4>
+                <ul className="space-y-2.5 text-sm sm:text-base text-[#4a5568]">
+                  <li className="flex items-start gap-2">
+                    <span className="text-[#00a884] font-bold mt-0.5">✓</span>
+                    <span>개발 경험이 있고 AI 엔지니어로 취업 준비 중인 분</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-[#00a884] font-bold mt-0.5">✓</span>
+                    <span>5~6개월간 풀타임으로 몰입할 수 있는 분</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-[#00a884] font-bold mt-0.5">✓</span>
+                    <span>팀 프로젝트 기반 협업이 가능한 분</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-[#00a884] font-bold mt-0.5">✓</span>
+                    <span>협회 지정 교육과정 신규 등록 예정자</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 className="font-bold text-lg text-[#1a202c] mb-4 flex items-center gap-2">
+                  <Shield className="w-5 h-5 text-red-500" />
+                  이런 분은 지원이 어렵습니다
+                </h4>
+                <ul className="space-y-2.5 text-sm sm:text-base text-[#4a5568]">
+                  <li className="flex items-start gap-2">
+                    <span className="text-red-500 font-bold mt-0.5">✗</span>
+                    <span>현재 재직 중이거나 알바 병행 예정인 분</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-red-500 font-bold mt-0.5">✗</span>
+                    <span>이론 위주 학습만을 원하시는 분</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-red-500 font-bold mt-0.5">✗</span>
+                    <span>단기 수강 후 중도 이탈 고려 중인 분</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-red-500 font-bold mt-0.5">✗</span>
+                    <span>기존 해당 교육과정에 이미 등록된 자</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="p-5 bg-[#f4f9f8] rounded-2xl border border-[#d1e7e2] text-xs sm:text-sm text-[#718096] leading-relaxed">
+              ※ 본 공모전은 AI 서비스 기획 아이디어를 가진 분들이 국가 지원 교육을 통해 실제로 구현할 수 있도록 동기를 제공하는 것을 목적으로 합니다. 교육 신규 참여자만 참가 가능하며, 기 등록자는 참가 대상에서 제외됩니다.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* TRACKS SECTION */}
+      <section id="tracks" className="py-24 bg-white scroll-mt-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-xs sm:text-sm font-bold text-[#718096] uppercase mb-3 tracking-widest">
+              모집 트랙
+            </h2>
+            <p className="text-3xl sm:text-4xl font-extrabold text-[#1a202c]">
+              3개 교육기관 중 희망 과정 선택
+            </p>
+            <p className="text-sm sm:text-base text-[#718096] mt-2">
+              공모전 아이디어 제출 후 지정 교육과정에 등록하여 직접 서비스를 구현하세요.
+            </p>
+          </div>
+
+          {/* Guide banner: step 1 idea submission first */}
+          <div className="bg-[#e6f4f1] border-2 border-[#00a884] rounded-3xl p-6 sm:p-8 mb-12 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">
+            <div className="space-y-1 text-center md:text-left">
+              <span className="bg-[#00a884] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                참가 순서 필독
+              </span>
+              <h3 className="text-lg sm:text-xl font-bold text-[#1a202c] pt-2">
+                [1단계] 공모전 아이디어 제출 ➔ [2단계] 아래 교육과정 등록
+              </h3>
+              <p className="text-xs sm:text-sm text-[#4a5568]">
+                아이디어 제출서를 먼저 작성하셔야 교육기관 등록 시 공모전 참가 혜택이 정상 연계됩니다.
+              </p>
+            </div>
+            <a
+              href={IDEA_SUBMISSION_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="bg-[#00a884] hover:bg-[#008f6f] text-white px-7 py-3.5 rounded-2xl font-bold text-sm sm:text-base transition-all shadow-md active:scale-95 whitespace-nowrap flex items-center gap-2"
+            >
+              <Send className="w-4 h-4" />
+              <span>공모전 아이디어 제출하기 (1단계) →</span>
+            </a>
+          </div>
+
+          <div className="space-y-12">
+            {/* Track 1: 카카오테크 부트캠프 */}
+            <div className="bg-white border-2 border-[#d1e7e2] hover:border-[#00a884]/40 transition-all rounded-3xl p-6 sm:p-10 shadow-md">
+              <div className="flex flex-wrap items-center justify-between gap-4 mb-6 pb-6 border-b border-gray-100">
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="bg-[#00a884] text-white text-xs font-bold px-3.5 py-1.5 rounded-full shadow-sm">
+                    수강료 18,876,000원 → 0원
+                  </span>
+                  <span className="bg-[#e6f4f1] text-[#00a884] border border-[#00a884]/30 text-xs font-bold px-3.5 py-1.5 rounded-full">
+                    KDT 자기부담금 0~60만원
+                  </span>
+                  <h3 className="text-2xl sm:text-3xl font-extrabold text-[#1a202c]">카카오테크 부트캠프</h3>
+                </div>
+              </div>
+
+              {/* Schedule Info Box */}
+              <div className="bg-[#f4f9f8] border border-[#d1e7e2] rounded-2xl p-4 sm:p-5 mb-8 grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                <div className="flex items-center gap-2 text-[#2d3748]">
+                  <Calendar className="w-4 h-4 text-[#00a884] shrink-0" />
+                  <span className="font-semibold text-[#718096]">지원 일정:</span>
+                  <span className="font-bold text-[#1a202c]">26.10.19(월) ~ 11.15(일)</span>
+                </div>
+                <div className="flex items-center gap-2 text-[#2d3748]">
+                  <Clock className="w-4 h-4 text-[#00a884] shrink-0" />
+                  <span className="font-semibold text-[#718096]">교육 일정:</span>
+                  <span className="font-bold text-[#1a202c]">26.12.28(월) ~ 27.06.29(화)</span>
+                </div>
+              </div>
+
+              {/* 3 Courses */}
+              <div className="space-y-4 mb-8">
+                <p className="text-xs font-bold text-[#718096] uppercase tracking-wider">개설 과정 (3개)</p>
+                <div className="flex gap-4 p-4 sm:p-5 bg-[#f4f9f8] rounded-2xl border border-[#d1e7e2] hover:bg-[#eaf4f2] transition-colors">
+                  <div className="w-8 h-8 rounded-full bg-[#00a884] text-white flex items-center justify-center font-bold text-sm shrink-0">
+                    1
+                  </div>
+                  <div>
+                    <p className="font-bold text-base sm:text-lg text-[#1a202c]">풀스택</p>
+                    <p className="text-xs sm:text-sm text-[#718096] mt-1">
+                      프론트엔드부터 백엔드까지 웹 서비스 전반을 아우르고 실무 협업 프로젝트를 통해 완성하는 풀스택 빌더
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4 p-4 sm:p-5 bg-[#f4f9f8] rounded-2xl border border-[#d1e7e2] hover:bg-[#eaf4f2] transition-colors">
+                  <div className="w-8 h-8 rounded-full bg-[#00a884] text-white flex items-center justify-center font-bold text-sm shrink-0">
+                    2
+                  </div>
+                  <div>
+                    <p className="font-bold text-base sm:text-lg text-[#1a202c]">AI 실무 개발</p>
+                    <p className="text-xs sm:text-sm text-[#718096] mt-1">
+                      최신 LLM 모델과 생성형 AI 기술을 현업 서비스에 적용하고 파이프라인 및 지능형 서비스를 직접 구축하는 실무 개발자
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4 p-4 sm:p-5 bg-[#f4f9f8] rounded-2xl border border-[#d1e7e2] hover:bg-[#eaf4f2] transition-colors">
+                  <div className="w-8 h-8 rounded-full bg-[#00a884] text-white flex items-center justify-center font-bold text-sm shrink-0">
+                    3
+                  </div>
+                  <div>
+                    <p className="font-bold text-base sm:text-lg text-[#1a202c]">클라우드 네이티브</p>
+                    <p className="text-xs sm:text-sm text-[#718096] mt-1">
+                      대규모 분산 트래픽을 견디는 안정적인 인프라 배포·자동화 및 컨테이너 기반 클라우드 아키텍처 설계 엔지니어
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-3">
+                <a
+                  href="https://forms.gle/31kMKPTRtAehx6QR9"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex-1 py-4 px-6 bg-[#00a884] text-white rounded-xl text-center text-sm sm:text-base font-bold hover:bg-[#008f6f] transition-all shadow-md shadow-[#00a884]/20 active:scale-95 flex items-center justify-center gap-2"
+                >
+                  과정 등록 신청하기 →
+                </a>
+                <a
+                  href="https://kakaotechbootcamp.com/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex-1 py-4 px-6 bg-[#f7fafc] border border-[#edf2f7] rounded-xl text-center text-sm sm:text-base font-bold text-[#2d3748] hover:bg-[#edf2f7] transition-all flex items-center justify-center gap-2"
+                >
+                  상세 과정 확인하기 <ExternalLink className="w-4 h-4" />
+                </a>
+              </div>
+              <p className="text-[11px] sm:text-xs text-[#718096] mt-3 text-center sm:text-left">
+                ※ 공모전 연계 시상을 위해 반드시 <a href={IDEA_SUBMISSION_URL} target="_blank" rel="noreferrer" className="text-[#00a884] font-bold underline">공모전 아이디어 제출</a>을 먼저 완료한 후 신청해주세요.
+              </p>
+            </div>
+
+            {/* Track 2: (마감임박) 프로그래머스 */}
+            <div className="bg-white border-2 border-red-200 hover:border-red-300 transition-all rounded-3xl p-6 sm:p-10 shadow-md">
+              <div className="flex flex-wrap items-center justify-between gap-4 mb-6 pb-6 border-b border-gray-100">
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="bg-red-500 text-white text-xs font-bold px-3.5 py-1.5 rounded-full flex items-center gap-1 shadow-sm">
+                    <Flame className="w-3.5 h-3.5" /> 마감임박
+                  </span>
+                  <span className="bg-[#00a884] text-white text-xs font-bold px-3.5 py-1.5 rounded-full shadow-sm">
+                    전액 무료 국비지원
+                  </span>
+                  <h3 className="text-2xl sm:text-3xl font-extrabold text-[#1a202c]">프로그래머스</h3>
+                </div>
+              </div>
+
+              {/* Schedule Info Box */}
+              <div className="bg-[#fff5f5] border border-red-100 rounded-2xl p-4 sm:p-5 mb-8 space-y-2 text-sm">
+                <div className="flex items-center gap-2 text-[#2d3748]">
+                  <Calendar className="w-4 h-4 text-red-500 shrink-0" />
+                  <span className="font-semibold text-[#718096]">모집 기간:</span>
+                  <span className="font-bold text-red-600">26년 11월 11일(수)까지 (마감임박)</span>
+                </div>
+                <div className="flex items-center gap-2 text-[#2d3748]">
+                  <Clock className="w-4 h-4 text-[#00a884] shrink-0" />
+                  <span className="font-semibold text-[#718096]">수강 기간:</span>
+                  <span className="font-bold text-[#1a202c]">26년 11월 13일(금) ~ 27년 4월 23일(금)</span>
+                </div>
+                <div className="flex items-center gap-2 text-[#2d3748]">
+                  <BookOpen className="w-4 h-4 text-[#00a884] shrink-0" />
+                  <span className="font-semibold text-[#718096]">교육 시간:</span>
+                  <span className="font-medium text-[#1a202c]">09:00 ~ 18:00 (+ 교육 시간 외 추가 학습 및 특강)</span>
+                </div>
+              </div>
+
+              {/* Description */}
+              <div className="space-y-4 mb-8">
+                <div className="p-5 bg-[#f4f9f8] rounded-2xl border border-[#d1e7e2]">
+                  <p className="font-bold text-base sm:text-lg text-[#1a202c] mb-1">
+                    프로그래머스 데브코스 집중 실전 과정
+                  </p>
+                  <p className="text-xs sm:text-sm text-[#4a5568] leading-relaxed">
+                    국내 최고 수준의 테크 멘토진과 1:1 코드 리뷰, 탄탄한 알고리즘 및 CS 기반의 프로젝트 중심 몰입형 교육.
+                    공모전 기획 아이디어를 탄탄한 코드와 소프트웨어 아키텍처로 구현합니다.
+                  </p>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-3">
+                <a
+                  href="https://forms.gle/YwU6YE1A9uueZFTn7"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex-1 py-4 px-6 bg-[#00a884] text-white rounded-xl text-center text-sm sm:text-base font-bold hover:bg-[#008f6f] transition-all shadow-md shadow-[#00a884]/20 active:scale-95 flex items-center justify-center gap-2"
+                >
+                  과정 등록 신청하기 →
+                </a>
+                <a
+                  href="https://programmers.kpii.or.kr/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex-1 py-4 px-6 bg-[#f7fafc] border border-[#edf2f7] rounded-xl text-center text-sm sm:text-base font-bold text-[#2d3748] hover:bg-[#edf2f7] transition-all flex items-center justify-center gap-2"
+                >
+                  상세 과정 확인하기 <ExternalLink className="w-4 h-4" />
+                </a>
+              </div>
+              <p className="text-[11px] sm:text-xs text-[#718096] mt-3 text-center sm:text-left">
+                ※ 공모전 연계 시상을 위해 반드시 <a href={IDEA_SUBMISSION_URL} target="_blank" rel="noreferrer" className="text-[#00a884] font-bold underline">공모전 아이디어 제출</a>을 먼저 완료한 후 신청해주세요.
+              </p>
+            </div>
+
+            {/* Track 3: (마감임박) kt cloud tech up */}
+            <div className="bg-white border-2 border-orange-200 hover:border-orange-300 transition-all rounded-3xl p-6 sm:p-10 shadow-md">
+              <div className="flex flex-wrap items-center justify-between gap-4 mb-6 pb-6 border-b border-gray-100">
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="bg-red-500 text-white text-xs font-bold px-3.5 py-1.5 rounded-full flex items-center gap-1 shadow-sm">
+                    <Flame className="w-3.5 h-3.5" /> 마감임박
+                  </span>
+                  <span className="bg-[#00a884] text-white text-xs font-bold px-3.5 py-1.5 rounded-full shadow-sm">
+                    kt cloud 공식 연계
+                  </span>
+                  <h3 className="text-2xl sm:text-3xl font-extrabold text-[#1a202c]">kt cloud tech up</h3>
+                </div>
+              </div>
+
+              {/* 5 Courses */}
+              <div className="space-y-4 mb-8">
+                <p className="text-xs font-bold text-[#718096] uppercase tracking-wider">개설 과정 (총 5개 과정 명시)</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="flex gap-4 p-4 bg-[#f4f9f8] rounded-2xl border border-[#d1e7e2]">
+                    <div className="w-8 h-8 rounded-full bg-[#00a884] text-white flex items-center justify-center font-bold text-sm shrink-0">
+                      1
+                    </div>
+                    <div>
+                      <p className="font-bold text-base text-[#1a202c]">풀스택</p>
+                      <p className="text-xs text-[#718096] mt-1">
+                        프론트엔드부터 백엔드까지 웹 전반을 책임지는 올라운드 실무 통합 개발
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4 p-4 bg-[#f4f9f8] rounded-2xl border border-[#d1e7e2]">
+                    <div className="w-8 h-8 rounded-full bg-[#00a884] text-white flex items-center justify-center font-bold text-sm shrink-0">
+                      2
+                    </div>
+                    <div>
+                      <p className="font-bold text-base text-[#1a202c]">프론트엔드</p>
+                      <p className="text-xs text-[#718096] mt-1">
+                        사용자 중심 인터랙션과 고성능 반응형 모던 웹 애플리케이션 개발
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4 p-4 bg-[#f4f9f8] rounded-2xl border border-[#d1e7e2]">
+                    <div className="w-8 h-8 rounded-full bg-[#00a884] text-white flex items-center justify-center font-bold text-sm shrink-0">
+                      3
+                    </div>
+                    <div>
+                      <p className="font-bold text-base text-[#1a202c]">백엔드</p>
+                      <p className="text-xs text-[#718096] mt-1">
+                        대규모 데이터 트래픽 처리 및 클라우드 네이티브 서버 아키텍처 설계
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4 p-4 bg-[#f4f9f8] rounded-2xl border border-[#d1e7e2]">
+                    <div className="w-8 h-8 rounded-full bg-[#00a884] text-white flex items-center justify-center font-bold text-sm shrink-0">
+                      4
+                    </div>
+                    <div>
+                      <p className="font-bold text-base text-[#1a202c]">프로덕트 매니지먼트 (PM)</p>
+                      <p className="text-xs text-[#718096] mt-1">
+                        IT 서비스 기획, 데이터 기반 가설 검증, 로드맵 수립 및 서비스 런칭 총괄
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4 p-4 bg-[#f4f9f8] rounded-2xl border border-[#d1e7e2] md:col-span-2">
+                    <div className="w-8 h-8 rounded-full bg-[#00a884] text-white flex items-center justify-center font-bold text-sm shrink-0">
+                      5
+                    </div>
+                    <div>
+                      <p className="font-bold text-base text-[#1a202c]">프로덕트 디자인</p>
+                      <p className="text-xs text-[#718096] mt-1">
+                        사용자 경험(UX) 심층 분석 및 완성도 높은 디자인 시스템(UI) 설계
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-3">
+                <a
+                  href="https://forms.gle/zZFbDgqRrS6WZeDd9"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex-1 py-4 px-6 bg-[#00a884] text-white rounded-xl text-center text-sm sm:text-base font-bold hover:bg-[#008f6f] transition-all shadow-md shadow-[#00a884]/20 active:scale-95 flex items-center justify-center gap-2"
+                >
+                  과정 등록 신청하기 →
+                </a>
+                <a
+                  href="https://ktcloud.kpii.or.kr/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex-1 py-4 px-6 bg-[#f7fafc] border border-[#edf2f7] rounded-xl text-center text-sm sm:text-base font-bold text-[#2d3748] hover:bg-[#edf2f7] transition-all flex items-center justify-center gap-2"
+                >
+                  상세 과정 확인하기 <ExternalLink className="w-4 h-4" />
+                </a>
+              </div>
+              <p className="text-[11px] sm:text-xs text-[#718096] mt-3 text-center sm:text-left">
+                ※ 공모전 연계 시상을 위해 반드시 <a href={IDEA_SUBMISSION_URL} target="_blank" rel="noreferrer" className="text-[#00a884] font-bold underline">공모전 아이디어 제출</a>을 먼저 완료한 후 신청해주세요.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Idea Samples Section */}
+      <section id="samples" className="py-24 bg-[#f4f9f8]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-xs sm:text-sm font-bold text-[#718096] uppercase mb-3 tracking-widest">
+              아이디어 제출 샘플
+            </h2>
+            <p className="text-2xl sm:text-3xl font-extrabold text-[#1a202c]">
+              이렇게 작성하시면 됩니다
+            </p>
+            <p className="text-sm text-[#718096] mt-2">
+              아래 샘플을 참고해 내 아이디어를 자유롭고 구체적으로 작성해보세요.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            {samples.map((sample, idx) => {
+              const isOpen = openSample === idx;
+              return (
+                <div key={idx} className="bg-white border border-[#d1e7e2] rounded-2xl overflow-hidden shadow-sm">
+                  <button
+                    onClick={() => toggleSample(idx)}
+                    className="w-full flex items-center justify-between p-6 text-left hover:bg-[#f4f9f8] transition-colors cursor-pointer"
+                  >
+                    <div>
+                      <p className="text-xs font-bold text-[#00a884] mb-1">{sample.track}</p>
+                      <p className="font-bold text-base sm:text-lg text-[#1a202c]">{sample.title}</p>
+                    </div>
+                    {isOpen ? (
+                      <ChevronUp className="w-5 h-5 text-[#718096] shrink-0" />
+                    ) : (
+                      <ChevronDown className="w-5 h-5 text-[#718096] shrink-0" />
+                    )}
+                  </button>
+
+                  {isOpen && (
+                    <div className="px-6 pb-6 space-y-4 border-t border-[#d1e7e2] pt-5 bg-white">
+                      <div>
+                        <p className="text-xs font-bold text-[#00a884] mb-1">해결하고 싶은 문제</p>
+                        <p className="text-sm sm:text-base text-[#4a5568] leading-relaxed">{sample.problem}</p>
+                      </div>
+                      <div>
+                        <p className="text-xs font-bold text-[#00a884] mb-1">어떻게 만들고 싶나요</p>
+                        <p className="text-sm sm:text-base text-[#4a5568] leading-relaxed">{sample.solution}</p>
+                      </div>
+                      <div>
+                        <p className="text-xs font-bold text-[#00a884] mb-1">지원 동기</p>
+                        <p className="text-sm sm:text-base text-[#4a5568] leading-relaxed">{sample.motive}</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section id="faq" className="py-24 bg-white">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-center mb-12">자주 묻는 질문</h2>
+          <div className="space-y-4">
+            {faqs.map((faq, idx) => {
+              const isOpen = openFaq === idx;
+              return (
+                <div key={idx} className="border border-gray-200 rounded-2xl overflow-hidden transition-all shadow-sm">
+                  <button
+                    onClick={() => toggleFaq(idx)}
+                    className="w-full flex items-center justify-between p-6 text-left hover:bg-[#f4f9f8] transition-colors group cursor-pointer"
+                  >
+                    <span className="font-bold text-base sm:text-lg pr-4 group-hover:text-[#00a884] transition-colors flex items-center">
+                      <span className="text-[#00a884] mr-3 font-extrabold">Q.</span>
+                      {faq.q}
+                    </span>
+                    {isOpen ? (
+                      <ChevronUp className="w-5 h-5 text-[#00a884] shrink-0" />
+                    ) : (
+                      <ChevronDown className="w-5 h-5 text-gray-400 group-hover:text-[#00a884] shrink-0" />
+                    )}
+                  </button>
+                  {isOpen && (
+                    <div className="px-6 pb-6 pt-2 bg-[#f4f9f8]/60 text-sm sm:text-base text-[#4a5568] border-t border-gray-100 leading-relaxed">
+                      {faq.a}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Final Apply Call To Action */}
+      <section id="apply" className="py-24 bg-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center">
+          <div className="bg-[#00a884] rounded-[3rem] p-10 sm:p-20 text-white shadow-2xl shadow-[#00a884]/25">
+            <h2 className="text-3xl sm:text-5xl font-black mb-6">내 AI 서비스를 세상 밖으로</h2>
+            <p className="text-base sm:text-xl text-[#d1f0e8] mb-10 max-w-2xl mx-auto leading-relaxed">
+              아이디어 제출이 1단계, 교육과정 등록이 2단계입니다.<br />
+              지금 바로 공모전 아이디어를 제출하세요.
+            </p>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-8">
+              <a
+                href={IDEA_SUBMISSION_URL}
+                target="_blank"
+                rel="noreferrer"
+                className="w-full sm:w-auto bg-white text-[#00a884] px-10 sm:px-12 py-5 rounded-2xl text-lg sm:text-xl font-bold hover:bg-[#f4f9f8] transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <Send className="w-5 h-5" />
+                <span>공모전 아이디어 제출하기 (1단계) →</span>
+              </a>
+              <button
+                onClick={() => scrollToSection('tracks')}
+                className="w-full sm:w-auto bg-[#008f6f] hover:bg-[#007b5f] text-white px-8 sm:px-10 py-5 rounded-2xl text-base sm:text-lg font-bold transition-all border border-white/20 active:scale-95 cursor-pointer"
+              >
+                교육과정 트랙 보기 (2단계)
+              </button>
+            </div>
+
+            <div className="inline-flex items-center gap-2 text-[#d1f0e8] text-sm sm:text-base">
+              <Calendar className="w-5 h-5" />
+              <span className="font-semibold">2026년 11월 30일(월) 마감</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-white py-12 border-t border-[#d1e7e2]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
+          <div className="text-xs sm:text-sm text-[#718096]">
+            <p className="font-bold mb-1 text-[#2d3748]">
+              주최: 한국프로세스혁신협회 (kpii.or.kr) | 본 사업은 고용노동부 KDT 국가 지원 교육과정과 연계됩니다.
+            </p>
+            <p>문의: 02-846-6579 / ai@kpii.or.kr</p>
+            <p className="mt-1">공모전 접수 기간: 2026.10.26 ~ 2026.11.30</p>
+            <p className="mt-0.5">공모전 공식 홈페이지: idea2026.kpii.or.kr</p>
+          </div>
+          <div className="flex flex-col items-center md:items-end gap-2">
+            <div className="flex items-center gap-2 opacity-60">
+              <div className="w-2 h-2 bg-[#00a884] rounded-full"></div>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-[#2d3748]">
+                Trust &amp; Innovation
+              </span>
+            </div>
+            <p className="text-[11px] text-[#a0aec0]">© 2026 Korea Process Innovation Institute. All Rights Reserved.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
